@@ -1,0 +1,72 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, ini al-scale=1.0"> 
+    < tle>Login - VigilantEye</ tle> 
+    <script src="h ps://cdn.tailwindcss.com"></script> 
+</head> 
+<body class="bg-gray-100 flex items-center jus fy-center min-h-screen"> 
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"> 
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">VigilantEye Login</h1> 
+        {% with messages = get_flashed_messages(with_categories=true) %} 
+            {% if messages %} 
+                {% for category, message in messages %} 
+                    <div class="mb-4 p-4 rounded-lg text-center {% if category == 'error' %}bg-red
+100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}"> 
+                        {{ message }} 
+                    </div> 
+                {% endfor %} 
+            {% endif %} 
+        {% endwith %} 
+        <!-- Note: Using a div and bu on instead of form onSubmit due to sandbox restric ons --> 
+        <div> 
+            <div class="mb-4"> 
+                <label for="username" class="block text-gray-700 font-medium mb
+2">Username</label> 
+                <input type="text" id="username" name="username" class="w-full p-3 border 
+rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your 
+username" required> 
+            </div> 
+            <div class="mb-6"> 
+                <label for="password" class="block text-gray-700 font-medium mb
+2">Password</label> 
+                <input type="password" id="password" name="password" class="w-full p-3 border 
+rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your 
+password" required> 
+            </div> 
+            <bu on onclick="submitLogin()" class="w-full bg-blue-600 text-white p-3 rounded-lg 
+hover:bg-blue-700 transi on dura on-300">Login</bu on> 
+        </div> 
+        <p class="text-center text-gray-600 mt-4">Don't have an account? <a href="#" 
+class="text-blue-600 hover:underline">Sign up</a></p> 
+    </div> 
+ 
+    <script> 
+        func on submitLogin() { 
+            const username = document.getElementById('username').value; 
+            const password = document.getElementById('password').value; 
+ 
+            if (!username || !password) { 
+                alert('Please fill in both username and password.'); 
+                return; 
+            } 
+ 
+            const formData = new FormData(); 
+            formData.append('username', username); 
+            formData.append('password', password); 
+ 
+            fetch('/login', { 
+                method: 'POST', 
+                body: formData 
+            }).then(response => { 
+                if (response.redirected) { 
+                    window.loca on.href = response.url; 
+                } 
+            }).catch(error => { 
+                console.error('Error:', error); 
+            }); 
+        } 
+    </script> 
+</body> 
+</html>
